@@ -1,8 +1,8 @@
 package top.wallen.nyima_weather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ import okhttp3.Response;
 import top.wallen.nyima_weather.db.City;
 import top.wallen.nyima_weather.db.County;
 import top.wallen.nyima_weather.db.Province;
-import top.wallen.nyima_weather.util.CityJsonUtil;
+import top.wallen.nyima_weather.util.Utility;
 import top.wallen.nyima_weather.util.HttpUtil;
 
 /**
@@ -37,7 +37,7 @@ import top.wallen.nyima_weather.util.HttpUtil;
 public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
-    public static final int LEVEL_COUNTRY = 2;
+    public static final int LEVEL_COUNTY = 2;
     private ProgressDialog progressDialog;
     private TextView titleText;
     private Button backButton;
@@ -76,6 +76,12 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -83,7 +89,7 @@ public class ChooseAreaFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentLevel == LEVEL_COUNTRY) {
+                if (currentLevel == LEVEL_COUNTY) {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     queryProvinces();
@@ -145,7 +151,7 @@ public class ChooseAreaFragment extends Fragment {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            currentLevel = LEVEL_COUNTRY;
+            currentLevel = LEVEL_COUNTY;
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
@@ -164,11 +170,11 @@ public class ChooseAreaFragment extends Fragment {
                 Log.e("TAG",responseText);
                 boolean result = false;
                 if ("province".equals(type)) {
-                    result = CityJsonUtil.handleProvinceResponse(responseText);
+                    result = Utility.handleProvinceResponse(responseText);
                 } else if ("city".equals(type)) {
-                    result = CityJsonUtil.handleCityResponse(responseText, selectedProvince.getId());
+                    result = Utility.handleCityResponse(responseText, selectedProvince.getId());
                 } else if ("county".equals(type)) {
-                    result = CityJsonUtil.handleCountyResponse(responseText, selectedCity.getId());
+                    result = Utility.handleCountyResponse(responseText, selectedCity.getId());
                 }
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {

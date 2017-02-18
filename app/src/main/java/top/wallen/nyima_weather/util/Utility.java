@@ -2,6 +2,8 @@ package top.wallen.nyima_weather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,12 +11,13 @@ import org.json.JSONObject;
 import top.wallen.nyima_weather.db.City;
 import top.wallen.nyima_weather.db.County;
 import top.wallen.nyima_weather.db.Province;
+import top.wallen.nyima_weather.gson.Weather;
 
 /**
  * Created by walle on 2/15/17.
  */
 
-public class CityJsonUtil {
+public class Utility {
 
     /*parse and solve province data*/
     public static boolean handleProvinceResponse(String response) {
@@ -76,5 +79,18 @@ public class CityJsonUtil {
             }
         }
         return false;
+    }
+
+    /*parse the weather JSON data to Weather Class Object*/
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
