@@ -1,5 +1,6 @@
 package top.wallen.nyima_weather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -30,6 +31,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import top.wallen.nyima_weather.gson.Forecast;
 import top.wallen.nyima_weather.gson.Weather;
+import top.wallen.nyima_weather.service.AutoUpdateService;
 import top.wallen.nyima_weather.util.HttpUtil;
 import top.wallen.nyima_weather.util.Utility;
 
@@ -212,6 +214,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carwash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     /*Load bing picture*/
