@@ -93,4 +93,21 @@ public class Utility {
         }
         return null;
     }
+
+    /*parse the BingPic JSON data*/
+    public static String handleBingPicResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("images");
+            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+            String url = jsonObject1.getString("url");
+            String bingPic = "http://cn.bing.com" + url;
+            return bingPic;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

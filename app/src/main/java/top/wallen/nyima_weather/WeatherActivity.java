@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -34,6 +37,8 @@ import top.wallen.nyima_weather.gson.Weather;
 import top.wallen.nyima_weather.service.AutoUpdateService;
 import top.wallen.nyima_weather.util.HttpUtil;
 import top.wallen.nyima_weather.util.Utility;
+
+import static top.wallen.nyima_weather.util.Utility.handleBingPicResponse;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -171,11 +176,13 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败，请检查网络", Toast.LENGTH_SHORT).show();
                         }
+                        //刷新结束，隐藏刷新进度条
                         swipeRefresh.setRefreshing(false);
                     }
                 });
             }
         });
+        //每次请求天气时也会刷新背景图
         loadBingPic();
     }
 
@@ -220,8 +227,9 @@ public class WeatherActivity extends AppCompatActivity {
 
     /*Load bing picture*/
     private void loadBingPic() {
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
-        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+
+        String bingPicUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&n=1";
+        HttpUtil.sendOkHttpRequest(bingPicUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -229,17 +237,23 @@ public class WeatherActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String bingPic = response.body().string();
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                editor.putString("bing_pic", bingPic);
-                editor.apply();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
-                    }
-                });
+                try {
+                    final String bingPic = Utility.handleBingPicResponse(response.body().string());
+                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                    editor.putString("bing_pic", bingPic);
+                    editor.apply();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                        }
+                    });
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
+
 }
