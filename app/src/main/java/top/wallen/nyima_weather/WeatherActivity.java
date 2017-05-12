@@ -227,7 +227,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     /*Load bing picture*/
     private void loadBingPic() {
-
         String bingPicUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&n=1";
         HttpUtil.sendOkHttpRequest(bingPicUrl, new Callback() {
             @Override
