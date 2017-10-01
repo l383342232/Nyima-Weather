@@ -4,6 +4,8 @@ Data source from HeFeng API
 ![](./screenshots/1.png)
 ![](./screenshots/2.png)
 ![](./screenshots/3.png)
+## Install
+go to apk folder, download app-debug.apk, install it on your phone
 ## License
 ![](http://www.gnu.org/graphics/gplv3-127x51.png)  
 Copyright © 2017 wallena3 (He Wang)  
