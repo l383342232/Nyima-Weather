@@ -9,11 +9,14 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import top.wallen.nyima_weather.WeatherActivity;
 import top.wallen.nyima_weather.gson.Weather;
 import top.wallen.nyima_weather.util.HttpUtil;
 import top.wallen.nyima_weather.util.Utility;
@@ -73,11 +76,32 @@ public class AutoUpdateService extends Service {
     }
 
     /**
+     * update bing pic from GuoLin API
+     */
+//    private void updateBingPicGL() {
+//        String requestBingPic = "http://guolin.tech/api/bing_pic";
+//        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String bingPic = response.body().string();
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
+//                editor.putString("bing_pic", bingPic);
+//                editor.apply();
+//            }
+//        });
+//    }
+
+    /**
      * update bing pic
      */
     private void updateBingPic() {
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
-        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+        String bingPicUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&n=1";
+        HttpUtil.sendOkHttpRequest(bingPicUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -85,10 +109,10 @@ public class AutoUpdateService extends Service {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String bingPic = response.body().string();
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
-                editor.putString("bing_pic", bingPic);
-                editor.apply();
+                    final String bingPic = Utility.handleBingPicResponse(response.body().string());
+                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
+                    editor.putString("bing_pic", bingPic);
+                    editor.apply();
             }
         });
     }
