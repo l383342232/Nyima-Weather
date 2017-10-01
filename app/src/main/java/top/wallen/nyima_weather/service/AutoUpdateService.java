@@ -9,14 +9,12 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
-import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import top.wallen.nyima_weather.WeatherActivity;
 import top.wallen.nyima_weather.gson.Weather;
 import top.wallen.nyima_weather.util.HttpUtil;
 import top.wallen.nyima_weather.util.Utility;
