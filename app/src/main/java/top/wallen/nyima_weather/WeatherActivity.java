@@ -204,10 +204,13 @@ public class WeatherActivity extends AppCompatActivity {
             TextView infoText = (TextView) view.findViewById(R.id.info_text);
             TextView maxText = (TextView) view.findViewById(R.id.max_text);
             TextView minText = (TextView) view.findViewById(R.id.min_text);
+            TextView windText = (TextView) view.findViewById(R.id.wind_text);
+
             dateText.setText(forecast.date);
             infoText.setText(forecast.more.info);
             maxText.setText(forecast.temperature.max);
             minText.setText(forecast.temperature.min);
+            windText.setText(forecast.wind.windDir + "," + forecast.wind.windLevel);
             forecastLayout.addView(view);
         }
         if (weather.aqi != null) {
