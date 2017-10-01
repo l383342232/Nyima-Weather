@@ -74,6 +74,8 @@ public class WeatherActivity extends AppCompatActivity {
 
     private String mWeatherId;
 
+    private TextView aqiQlty;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +107,8 @@ public class WeatherActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navButton = (Button) findViewById(R.id.nav_button);
 
+        aqiQlty = (TextView) findViewById(R.id.aqi_qlty);
+        
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
@@ -121,7 +125,6 @@ public class WeatherActivity extends AppCompatActivity {
 
         String bingPic = prefs.getString("bing_pic", null);
         if (bingPic != null) {
-            Log.e("sad",bingPic);
             Glide.with(this).load(bingPic).into(bingPicImg);
         } else {
             loadBingPic();
@@ -203,18 +206,17 @@ public class WeatherActivity extends AppCompatActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.forecast_item, forecastLayout, false);
             TextView dateText = (TextView) view.findViewById(R.id.date_text);
             TextView infoText = (TextView) view.findViewById(R.id.info_text);
-            TextView maxText = (TextView) view.findViewById(R.id.max_text);
-            TextView minText = (TextView) view.findViewById(R.id.min_text);
+            TextView tmpRangeText = (TextView) view.findViewById(R.id.tmp_range_text); 
             TextView windText = (TextView) view.findViewById(R.id.wind_text);
 
             dateText.setText(forecast.date);
             infoText.setText(forecast.more.info);
-            maxText.setText(forecast.temperature.max);
-            minText.setText(forecast.temperature.min);
+            tmpRangeText.setText(forecast.temperature.min + "~" + forecast.temperature.max + "° C");
             windText.setText(forecast.wind.windDir + "," + forecast.wind.windLevel);
             forecastLayout.addView(view);
         }
         if (weather.aqi != null) {
+            aqiQlty.setText("空气质量: " + weather.aqi.city.qlty);
             aqiText.setText(weather.aqi.city.aqi);
             pm25Text.setText(weather.aqi.city.pm25);
         }

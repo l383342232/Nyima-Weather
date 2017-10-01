@@ -6,6 +6,7 @@
     android:background="#8000">
 
     <TextView
+        android:id="@+id/aqi_qlty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
