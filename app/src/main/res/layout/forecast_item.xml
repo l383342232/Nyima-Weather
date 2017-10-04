@@ -8,15 +8,16 @@
         android:id="@+id/date_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.95"
+        android:layout_weight="0.8"
         android:layout_gravity="center_vertical"
+        android:gravity="left"
         android:textColor="#fff"/>
 
     <TextView
         android:id="@+id/info_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
+        android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:textColor="#fff"/>
@@ -25,16 +26,16 @@
         android:id="@+id/tmp_range_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.9"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="right"
+        android:gravity="center"
         android:textColor="#fff"/>
 
     <TextView
         android:id="@+id/wind_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.5"
         android:layout_gravity="center"
         android:gravity="right"
         android:textColor="#fff"/>

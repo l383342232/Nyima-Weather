@@ -6,12 +6,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ScrollingView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +21,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -37,8 +31,6 @@ import top.wallen.nyima_weather.gson.Weather;
 import top.wallen.nyima_weather.service.AutoUpdateService;
 import top.wallen.nyima_weather.util.HttpUtil;
 import top.wallen.nyima_weather.util.Utility;
-
-import static top.wallen.nyima_weather.util.Utility.handleBingPicResponse;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -204,15 +196,15 @@ public class WeatherActivity extends AppCompatActivity {
         forecastLayout.removeAllViews();
         for (Forecast forecast : weather.forecastList) {
             View view = LayoutInflater.from(this).inflate(R.layout.forecast_item, forecastLayout, false);
-            TextView dateText = (TextView) view.findViewById(R.id.date_text);
-            TextView infoText = (TextView) view.findViewById(R.id.info_text);
-            TextView tmpRangeText = (TextView) view.findViewById(R.id.tmp_range_text); 
-            TextView windText = (TextView) view.findViewById(R.id.wind_text);
+            TextView dateText = view.findViewById(R.id.date_text);
+            TextView infoText = view.findViewById(R.id.info_text);
+            TextView tmpRangeText = view.findViewById(R.id.tmp_range_text); 
+            TextView windText = view.findViewById(R.id.wind_text);
 
-            dateText.setText(forecast.date);
+            dateText.setText(forecast.date.substring(5));
             infoText.setText(forecast.more.info);
             tmpRangeText.setText(forecast.temperature.min + "~" + forecast.temperature.max + "° C");
-            windText.setText(forecast.wind.windDir + "," + forecast.wind.windLevel);
+            windText.setText(forecast.wind.windDir + "," + forecast.wind.windLevel + "级");
             forecastLayout.addView(view);
         }
         if (weather.aqi != null) {
