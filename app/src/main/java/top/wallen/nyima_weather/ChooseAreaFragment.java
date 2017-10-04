@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
     public static final int LEVEL_COUNTY = 2;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
     private TextView titleText;
     private Button backButton;
     private ListView listView;
@@ -60,6 +61,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         return view;
@@ -215,18 +217,11 @@ public class ChooseAreaFragment extends Fragment {
 
     /*display progress dialog*/
     private void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Loading...");
-            progressDialog.setCanceledOnTouchOutside(false);
-        }
-        progressDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     /*close progress dialog*/
     private void closeProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }
